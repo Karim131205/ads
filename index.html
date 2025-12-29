@@ -1,42 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Ads</title>
-  <style>
-    body {
-      margin: 0;
-      background: black;
-    }
-    video {
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-    }
-  </style>
-</head>
-<body>
-
-<video id="player" autoplay muted></video>
+<video id="player" autoplay muted playsinline></video>
 
 <script>
-  const videos = [
-    "video.mp4",
-    "video2.mp4"
-  ];
-
+  const videos = ["video.mp4", "video2.mp4"];
   let index = 0;
   const player = document.getElementById("player");
 
+  // extra wichtig für iOS/Safari
+  player.setAttribute("playsinline", "");
+  player.setAttribute("webkit-playsinline", "");
+  player.muted = true;
+
   function playNext() {
     player.src = videos[index];
-    player.play();
+    player.load();
+    const p = player.play();
+    if (p) p.catch(() => {
+      // falls Safari Autoplay blockt, bleibt Standbild bis du einmal tippst
+      console.log("Autoplay blocked - tap once to start");
+    });
+
     index = (index + 1) % videos.length;
   }
 
   player.addEventListener("ended", playNext);
   playNext();
 </script>
-
-</body>
-</html>
