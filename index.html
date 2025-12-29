@@ -1,17 +1,42 @@
 <!DOCTYPE html>
-<html lang="de">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Werbung</title>
+  <meta charset="UTF-8">
+  <title>Ads</title>
   <style>
-    body { margin:0; background:#000; }
-    video { width:100vw; height:100vh; object-fit:contain; }
+    body {
+      margin: 0;
+      background: black;
+    }
+    video {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+    }
   </style>
 </head>
 <body>
-  <video autoplay muted loop playsinline>
-    <source src="video.mp4" type="video/mp4">
-  </video>
+
+<video id="player" autoplay muted></video>
+
+<script>
+  const videos = [
+    "video.mp4",
+    "video2.mp4"
+  ];
+
+  let index = 0;
+  const player = document.getElementById("player");
+
+  function playNext() {
+    player.src = videos[index];
+    player.play();
+    index = (index + 1) % videos.length;
+  }
+
+  player.addEventListener("ended", playNext);
+  playNext();
+</script>
+
 </body>
 </html>
